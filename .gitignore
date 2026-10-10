@@ -1,0 +1,24 @@
+# 依赖与构建产物
+node_modules/
+backend/target/
+
+# IDE 配置
+.idea/
+.vscode/
+*.iml
+
+# 旧版 Node.js 后端（已重写为 Spring Boot，内含 .env 密钥，不入库）
+server/
+
+# 密钥 / 环境变量
+.env
+*.local
+
+# 演示用大文件 / 临时文件
+*.pptx
+新建 文本文档.txt
+
+# 日志与系统文件
+*.log
+.DS_Store
+Thumbs.db

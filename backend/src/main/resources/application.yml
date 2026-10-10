@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: bidding-backend
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 生产环境务必用环境变量注入，不要提交明文密码（这里仅作本地演示默认值）
+    url: jdbc:mysql://localhost:3306/bidding_system?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:your_mysql_password}
+  jackson:
+    # 前后端统一用 snake_case 字段名，避免驼峰/下划线混用导致的映射 bug
+    property-naming-strategy: SNAKE_CASE
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  configuration:
+    # 数据库列名(下划线) 与 实体属性(驼峰) 自动映射
+    map-underscore-to-camel-case: true
+    # 开发期打印 SQL 到控制台，方便排查（面试可讲：生产换成 logback 按需输出）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      # 主键自增
+      id-type: auto
+      # 逻辑删除配置：删除走 UPDATE deleted=1，不物理删
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# 自定义 JWT 配置
+jwt:
+  # HMAC 密钥（HS256 要求至少 32 字节）；生产务必走环境变量/配置中心
+  secret: ${JWT_SECRET:bidding-system-jwt-secret-key-please-change-in-prod-0123456789}
+  # 令牌有效期（秒），默认 24 小时
+  expiration: 86400
+  header: Authorization
+  prefix: "Bearer "
